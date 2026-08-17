@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     """Global application settings."""
 
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://namanchawla:naman@localhost:5432/postgres"
+    DATABASE_URL: str = "postgresql+asyncpg://user:pass@localhost:5432/postgres"
 
     # API
     API_V1_PREFIX: str = "/v1"
