@@ -1,0 +1,10 @@
+"""Items domain constants and error codes."""
+
+# Error codes
+ITEM_NOT_FOUND = "ITEM_001"
+ITEM_ALREADY_EXISTS = "ITEM_002"
+ITEM_VALIDATION_ERROR = "ITEM_003"
+
+# Constants
+MAX_ITEM_NAME_LENGTH = 255
+MAX_ITEM_DESCRIPTION_LENGTH = 1000

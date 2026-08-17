@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Backgrounds */
+  --bg-canvas: #F4F6F8;
+  --bg-surface: #FFFFFF;
+
+  /* Typography */
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+
+  /* UI Elements */
+  --border-muted: #E5E7EB;
+  --shadow-surface: 0px 4px 12px rgba(0, 0, 0, 0.05);
+
+  /* Semantic Actions & Data */
+  --action-primary: #2563EB;
+  --data-positive: #059669;
+  --data-negative: #DC2626;
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+}
+
+@layer components {
+  .widget-card {
+    background-color: var(--bg-surface);
+    box-shadow: var(--shadow-surface);
+    border-radius: 12px;
+    border: 1px solid var(--border-muted);
+  }
+}
+
+/* Custom scrollbar for light theme */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #D1D5DB transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #D1D5DB;
+    border-radius: 3px;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}

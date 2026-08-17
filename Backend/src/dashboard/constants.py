@@ -1,0 +1,22 @@
+"""Dashboard domain constants."""
+
+# Error codes
+DASHBOARD_METRIC_NOT_FOUND = "DASHBOARD_001"
+DASHBOARD_METRIC_ALREADY_EXISTS = "DASHBOARD_002"
+DASHBOARD_VALIDATION_ERROR = "DASHBOARD_003"
+
+# Metric types
+METRIC_TYPE_COUNT = "count"
+METRIC_TYPE_PERCENTAGE = "percentage"
+METRIC_TYPE_CURRENCY = "currency"
+METRIC_TYPE_DURATION = "duration"
+
+# Metric categories
+CATEGORY_USERS = "users"
+CATEGORY_REVENUE = "revenue"
+CATEGORY_PERFORMANCE = "performance"
+CATEGORY_ENGAGEMENT = "engagement"
+
+# Pagination defaults
+DEFAULT_METRICS_PER_PAGE = 20
+MAX_METRICS_PER_PAGE = 100
