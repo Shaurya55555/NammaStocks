@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: nammastocks-backend
+    runtime: docker
+    dockerfilePath: ./Backend/Dockerfile
+    dockerContext: ./Backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: API_V1_PREFIX
+        value: /v1
+      - key: PROJECT_NAME
+        value: NammaStocks Backend
+      - key: VERSION
+        value: 1.0.0
+      - key: BACKEND_CORS_ORIGINS
+        sync: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: LLM_PROVIDER
+        value: ollama
+      - key: LLM_MODEL
+        value: mistral
+      - key: LLM_API_KEY
+        sync: false
