@@ -168,6 +168,28 @@ def _build_system_message(rag_context: str) -> SystemMessage:
     return SystemMessage(content=content)
 
 
+def _extract_text(content) -> str:
+    """
+    Normalize a LangChain message's `.content` into plain text.
+
+    Most providers return a plain string. Newer models (e.g. Gemini's
+    "thinking" variants) return a list of content blocks instead — each
+    block is either a plain string or a dict with a "text" key (other
+    block types, like "thinking"/"reasoning" blocks, are skipped).
+    """
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for block in content:
+            if isinstance(block, str):
+                parts.append(block)
+            elif isinstance(block, dict) and block.get("type", "text") == "text":
+                parts.append(block.get("text", ""))
+        return "".join(parts)
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
@@ -241,7 +263,7 @@ async def _invoke_llm(lc_messages: list, model: str | None, base_url: str | None
         llm = _get_llm(actual_model)
 
     response = await llm.ainvoke(lc_messages)
-    text = response.content if isinstance(response.content, str) else ""
+    text = _extract_text(response.content)
 
     return AgentResponse(
         text=text or "I couldn't generate a response. Please try again.",
@@ -290,7 +312,7 @@ async def stream_chat_response(messages: List[Message], model: str | None = None
             llm = _get_llm(actual_model)
 
         async for chunk in llm.astream(lc_messages):
-            text = chunk.content or ""
+            text = _extract_text(chunk.content)
             if text:
                 yield f"data: {json.dumps({'chunk': text})}\n\n"
 
