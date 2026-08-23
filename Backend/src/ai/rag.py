@@ -16,6 +16,7 @@ from typing import List, Optional
 import yfinance as yf
 
 from src.config import settings
+from src.shared.market_data import YF_SESSION
 
 
 # ---------------------------------------------------------------------------
@@ -118,7 +119,7 @@ def _fetch_stock_snapshot(symbol: str) -> Optional[dict]:
     """Fetch a compact price snapshot for one NSE symbol using yfinance."""
     try:
         ns_symbol = f"{symbol}.NS"
-        ticker = yf.Ticker(ns_symbol)
+        ticker = yf.Ticker(ns_symbol, session=YF_SESSION)
         info = ticker.info
 
         # Fast path: use regularMarketPrice from info dict
@@ -164,7 +165,7 @@ def _fetch_stock_snapshot(symbol: str) -> Optional[dict]:
 def _fetch_news_headlines(symbol: str, limit: int = 3) -> List[str]:
     """Fetch recent news headlines for a symbol via yfinance."""
     try:
-        ticker = yf.Ticker(f"{symbol}.NS")
+        ticker = yf.Ticker(f"{symbol}.NS", session=YF_SESSION)
         news_items = ticker.get_news(count=limit, tab="news")
         headlines = []
         for item in news_items:

@@ -1,7 +1,7 @@
 """Stocks service layer for dedicated stock data fetching."""
 
 import yfinance as yf
-from src.shared.market_data import fetch_batch_summary
+from src.shared.market_data import fetch_batch_summary, YF_SESSION
 
 
 class StocksService:
@@ -9,12 +9,12 @@ class StocksService:
 
     def get_ticker_info(self, symbol: str) -> dict:
         """Get ticker info."""
-        ticker = yf.Ticker(symbol)
+        ticker = yf.Ticker(symbol, session=YF_SESSION)
         return ticker.info
 
     def get_ticker_history(self, symbol: str, period: str = "1mo") -> dict:
         """Get historical data."""
-        ticker = yf.Ticker(symbol)
+        ticker = yf.Ticker(symbol, session=YF_SESSION)
 
         # Automatically adjust data interval based on the chosen period
         interval = "1d"

@@ -21,6 +21,17 @@ from typing import Any
 _cache: dict[str, tuple[float, Any]] = {}
 _CACHE_TTL = 60  # seconds
 
+# Yahoo Finance rejects plain `requests` sessions from datacenter IPs (like
+# Render's) with 401 "Invalid Crumb" errors — its bot detection keys off the
+# TLS fingerprint, not just headers. curl_cffi impersonates a real Chrome
+# TLS handshake, which Yahoo accepts. Shared across calls so the session's
+# negotiated cookies/crumb get reused instead of re-negotiated every request.
+try:
+    from curl_cffi import requests as _cffi_requests
+    YF_SESSION = _cffi_requests.Session(impersonate="chrome")
+except ImportError:
+    YF_SESSION = None
+
 
 def _cache_get(key: str) -> Any | None:
     entry = _cache.get(key)
@@ -71,6 +82,7 @@ def fetch_batch_summary(symbols: list[str], period: str = "1mo") -> dict:
             auto_adjust=True,
             progress=False,
             threads=True,
+            session=YF_SESSION,
         )
     except Exception as e:
         print(f"[market_data] yf.download() failed: {e}")
@@ -84,7 +96,7 @@ def fetch_batch_summary(symbols: list[str], period: str = "1mo") -> dict:
     live_data = {}
     def get_live(sym):
         try:
-            info = yf.Ticker(sym).info
+            info = yf.Ticker(sym, session=YF_SESSION).info
             price = info.get("currentPrice") or info.get("regularMarketPrice") or info.get("previousClose") or 0
             prev = info.get("previousClose") or price
             return sym, price, prev

@@ -7,6 +7,7 @@ import asyncio
 from bs4 import BeautifulSoup
 from typing import List
 from .schemas import NewsItem
+from src.shared.market_data import YF_SESSION
 
 class NewsService:
     def _clean_html(self, raw_html: str) -> str:
@@ -19,7 +20,7 @@ class NewsService:
     def get_yfinance_news(self, ticker: str, limit: int = 10) -> List[NewsItem]:
         """Fetch news for a specific ticker using yfinance."""
         try:
-            t = yf.Ticker(ticker)
+            t = yf.Ticker(ticker, session=YF_SESSION)
             news = t.get_news(count=limit, tab='news')
 
             results = []

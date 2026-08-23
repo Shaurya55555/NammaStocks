@@ -22,5 +22,6 @@ COPY . .
 
 EXPOSE 8000
 
-# Start FastAPI with hot reload enabled
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Production server — no --reload (its file watcher exhausts open-file
+# limits in this container and can crash the process on startup)
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
