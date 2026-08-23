@@ -14,5 +14,6 @@ feedparser
 langchain
 langchain-core
 langchain-ollama
+langchain-google-genai
 python-jose[cryptography]
 httpx
